@@ -1,0 +1,12 @@
+html, body, .the-toggle-button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+}
+
+body.light-on.the-toggle-button {
+	background-color: white;
+}

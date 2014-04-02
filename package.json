@@ -1,0 +1,15 @@
+{
+  "name": "torch",
+  "version": "1.0.0",
+  "main": "index.html",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-compress": "~0.5.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://scm@texthtml.net/webapp/torch"
+  },
+  "author": "Mathieu Rochette",
+  "license": "aGPLv3"
+}

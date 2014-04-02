@@ -1,0 +1,24 @@
+{
+    "name": "torch",
+    "version": "1.0.0",
+
+    "launch_path": "/index.html",
+
+    "developer": {
+        "name": "Mathieu Rochette",
+        "url": "https://mathieu.rochette.cc/"
+    },
+
+    "icons": {
+        "128": "/icons/128.png",
+        "256": "/icons/256.png"
+    },
+
+    "type": "certified",
+
+    "permissions": {
+        "camera": {
+            "description": "required to use camera flash light"
+        }
+    }
+}
