@@ -19,7 +19,7 @@
         document.body.classList[on ? 'add' : 'remove']('light-on');
     };
 
-    if ('mozCameras' in window.navigator) {
+    try {
         var cameras = window.navigator.mozCameras.getListOfCameras();
 
         for (var cameraId of cameras) {
@@ -33,6 +33,8 @@
                 }
             });
         }
+    } catch (e) {
+        // camera api not supported
     }
 
     window.addEventListener("visibilitychange", function(e){
