@@ -1,5 +1,6 @@
 {
     "name": "torch",
+    "description": "turn the light on!",
     "version": "1.0.0",
 
     "launch_path": "/index.html",
