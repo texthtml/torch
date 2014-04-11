@@ -19,7 +19,7 @@
         "256": "/icons/256.png"
     },
 
-    "type": "certified",
+    "type": "privileged",
 
     "permissions": {
         "camera": {
