@@ -7,7 +7,7 @@
         return document.body.classList.contains('light-on');
     };
 
-    var switch_the_light = function(on) {
+    var switchTheLight = function(on) {
         if (on === undefined) {
             on = !lightIsOn();
         }
@@ -19,23 +19,53 @@
         document.body.classList[on ? 'add' : 'remove']('light-on');
     };
 
-    try {
-        var cameras = window.navigator.mozCameras.getListOfCameras();
+    var findCamera = function() {
+        try {
+            var cameras = window.navigator.mozCameras.getListOfCameras();
 
-        for (var cameraId of cameras) {
-            var camera = window.navigator.mozCameras.getCamera({
-                camera: cameraId
-            }, function(camera) {
+            if (cameras.length === 0) {
+                console.warn('No camera found, only screen availlable');
+                return;
+            }
+
+            var invalidCamerasCount = 0;
+
+            var cameraIsInvalid = function() {
+                invalidCamerasCount++;
+
+                if (invalidCamerasCount === cameras.length) {
+                    console.warn('No flashlight found, only screen availlable');
+                }
+            };
+
+            var GetCameraCallback = function(camera, config) {
                 if (camera.capabilities.flashModes.indexOf('torch') !== -1) {
                     cameraWithFlash = camera;
 
-                    switch_the_light(true);
+                    switchTheLight(true);
+                } else {
+                    cameraIsInvalid();
                 }
-            });
+            };
+
+            var CameraErrorCallback = function (error) {
+                console.error(error);
+                cameraIsInvalid();
+            };
+
+            for (var cameraId of cameras) {
+                var camera = window.navigator.mozCameras.getCamera({
+                    camera: cameraId
+                }, {
+                    mode: 'picture',
+                    previewSize: null,
+                    recorderProfile: 'cif'
+                }, GetCameraCallback, CameraErrorCallback);
+            }
+        } catch (e) {
+            console.warn('camera api not supported (simulator or <2.0)');
         }
-    } catch (e) {
-        // camera api not supported
-    }
+    };
 
     window.addEventListener("visibilitychange", function(e){
         if (cameraWithFlash !== null) {
@@ -45,8 +75,10 @@
     }, false);
 
     document.body.addEventListener('click', function () {
-        switch_the_light();
+        switchTheLight();
     });
 
-    switch_the_light(true);
+    findCamera();
+
+    switchTheLight(true);
 }) ();
