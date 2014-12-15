@@ -19,19 +19,37 @@
         document.body.classList[on ? 'add' : 'remove']('light-on');
     };
 
+    var got_camera = function(camera) {
+        if (cameraWithFlash === null && camera.capabilities.flashModes.indexOf('torch') !== -1) {
+            cameraWithFlash = camera;
+
+            switch_the_light(true);
+        } else {
+            camera.release();
+        }
+    };
+
+    var version = window.navigator.userAgent.match(/Firefox\/([\d]+)/);
+    var usePromise = (version && version.length === 2 && version[1] >= 37)
+
     try {
         var cameras = window.navigator.mozCameras.getListOfCameras();
 
         for (var cameraId of cameras) {
-            var camera = window.navigator.mozCameras.getCamera({
-                camera: cameraId
-            }, function(camera) {
-                if (camera.capabilities.flashModes.indexOf('torch') !== -1) {
-                    cameraWithFlash = camera;
-
-                    switch_the_light(true);
-                }
-            });
+            if (usePromise) {
+                window.navigator.mozCameras.getCamera(
+                    cameraId,
+                    {
+                        mode: 'unspecified'
+                    }
+                ).then(function(p) {
+                    got_camera(p.camera);
+                });
+            } else {
+                window.navigator.mozCameras.getCamera(
+                    cameraId, null, got_camera
+                );
+            }
         }
     } catch (e) {
         // camera api not supported
