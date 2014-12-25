@@ -53,14 +53,23 @@
                 cameraIsInvalid();
             };
 
+            var version = window.navigator.userAgent.match(/Firefox\/([\d]+)/);
+            var usePromise = !(version && version.length === 2 && version[1] < 37);
+
             for (var cameraId of cameras) {
-                var camera = window.navigator.mozCameras.getCamera({
-                    camera: cameraId
-                }, {
-                    mode: 'picture',
-                    previewSize: null,
-                    recorderProfile: 'cif'
-                }, GetCameraCallback, CameraErrorCallback);
+                if (usePromise) {
+                    window.navigator.mozCameras.getCamera(cameraId, {mode: 'unspecified'}).then(function(p) {
+                        GetCameraCallback(p.camera);
+                    }, CameraErrorCallback);
+                } else {
+                    var camera = window.navigator.mozCameras.getCamera({
+                        camera: cameraId
+                    }, {
+                        mode: 'picture',
+                        previewSize: null,
+                        recorderProfile: 'cif'
+                    }, GetCameraCallback, CameraErrorCallback);
+                }
             }
         } catch (e) {
             console.warn('camera api not supported (simulator or <2.0)');
