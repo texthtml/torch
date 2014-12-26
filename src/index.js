@@ -7,6 +7,8 @@
         return document.body.classList.contains('light-on');
     };
 
+    var lock = null;
+
     var switchTheLight = function(on) {
         if (on === undefined) {
             on = !lightIsOn();
@@ -14,6 +16,17 @@
 
         if (cameraWithFlash !== null) {
             cameraWithFlash.flashMode = on ? 'torch' : 'off';
+        }
+
+        if ('requestWakeLock' in window.navigator) {
+            if (on && lock === null) {
+                lock = window.navigator.requestWakeLock('screen');
+            }
+
+            if (!on && lock !== null) {
+                lock.unlock();
+                lock = null;
+            }
         }
 
         document.body.classList[on ? 'add' : 'remove']('light-on');
