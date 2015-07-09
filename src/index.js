@@ -66,8 +66,7 @@
                 cameraIsInvalid();
             };
 
-            var version = window.navigator.userAgent.match(/Firefox\/([\d]+)/);
-            var usePromise = !(version && version.length === 2 && version[1] < 37);
+            var usePromise = window.navigator.mozCameras.getCamera.length === 1;
 
             for (var cameraId of cameras) {
                 if (usePromise) {
