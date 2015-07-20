@@ -1,0 +1,7 @@
+grunt:
+  build: .
+  command: grunt
+  volumes:
+    - GruntFile.js:/app/GruntFile.js:ro
+    - src:/app/src:ro
+    - build:/app/build:rw

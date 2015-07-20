@@ -3,7 +3,7 @@ module.exports = function(grunt) {
 		compress: {
 			package: {
 				options: {
-					archive: 'torch.zip'
+					archive: 'build/torch.zip'
 				},
 				files: [
 					{cwd: 'src/', expand: true, src: '**', dest: '/'}
