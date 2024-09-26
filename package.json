@@ -4,7 +4,7 @@
   "main": "index.html",
   "devDependencies": {
     "grunt": "~0.4.1",
-    "grunt-contrib-compress": "~0.5.2"
+    "grunt-contrib-compress": "~2.0.0"
   },
   "repository": {
     "type": "git",
